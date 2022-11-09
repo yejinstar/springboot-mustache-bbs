@@ -6,10 +6,7 @@ import com.mustache.bbs.repository.ArticleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,8 +55,33 @@ public class ArticleController {
             model.addAttribute("article", optArticle.get());
             return "articles/show";
         } else{
+            model.addAttribute("message", String.format("%d가 없습니다.", id));
             return "articles/error";
         }
 
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+        Optional<Article> optArticle = articleRepository.findById(id);
+
+        if (!optArticle.isEmpty()) {
+            model.addAttribute("article", optArticle.get());
+            return "articles/edit";
+        } else{
+            model.addAttribute("message", String.format("%d가 없습니다.", id));
+            return "articles/error";
+        }
+
+    }
+
+    @PostMapping("/{id}/update")
+    public String update(@PathVariable Long id, ArticleDto articleDto,
+                         Model model) {
+        log.info("title:{} content:{} id:{}",articleDto.getTitle(),articleDto.getContent()
+        ,articleDto.getId());
+        Article article = articleRepository.save(articleDto.toEntity());
+        model.addAttribute("article", article);
+        return String.format("redirect:/articles/%d",article.getId());
     }
 }
