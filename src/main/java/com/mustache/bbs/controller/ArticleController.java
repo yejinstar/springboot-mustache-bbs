@@ -55,7 +55,7 @@ public class ArticleController {
             model.addAttribute("article", optArticle.get());
             return "articles/show";
         } else{
-            model.addAttribute("message", String.format("%d가 없습니다.", id));
+            model.addAttribute("message", String.format("%d 이 없어요.", id));
             return "articles/error";
         }
 
@@ -83,5 +83,11 @@ public class ArticleController {
         Article article = articleRepository.save(articleDto.toEntity());
         model.addAttribute("article", article);
         return String.format("redirect:/articles/%d",article.getId());
+    }
+
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        articleRepository.deleteById(id);
+        return String.format("redirect:/articles");
     }
 }
