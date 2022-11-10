@@ -5,10 +5,13 @@
             <h5 class="card-title">{{title}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{id}}</h6>
             <p class="card-text">{{content}}</p>
-            <a href="/articles/new" class="card-link">new article</a>
-            <a href="/articles" class="card-link">list article</a>
+<!--            <a href="/articles/new" class="card-link">new article</a>-->
+            <a href="/articles" class="card-link">back</a>
         </div>
-        <a href="/articles/{{id}}/edit" class="btn btn-danger">Edit</a>
+        <div class="buttons">
+        <a href="/articles/{{id}}/edit" class="btn btn-primary">Edit</a>
+        <a href="/articles/{{id}}/delete" class="btn btn-danger">Delete</a>
+        </div>
     {{/article}}
 </div>
 {{>layouts/footer}}
