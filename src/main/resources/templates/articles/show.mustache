@@ -1,17 +1,53 @@
 {{>layouts/header}}
-<div class="card" style="width: 18rem;">
+
+<div class="container">
     {{#article}}
-        <div class="card-body">
-            <h5 class="card-title">{{title}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{id}}</h6>
-            <p class="card-text">{{content}}</p>
-<!--            <a href="/articles/new" class="card-link">new article</a>-->
-            <a href="/articles" class="card-link">List</a>
-        </div>
+        <br>
+        <br>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h5>{{title}}</h5></li>
+            <li class="list-group-item">{{content}}</li>
+        </ul>
+        <br>
         <div class="buttons">
-        <a href="/articles/{{id}}/edit" class="btn btn-primary">Edit</a>
-        <a href="/articles/{{id}}/delete" class="btn btn-danger">Delete</a>
+            <a href="/articles/{{id}}/edit" class="btn btn-primary">Edit</a>
+            <a href="/articles/{{id}}/delete" class="btn btn-danger">Delete</a>
         </div>
     {{/article}}
 </div>
+
+<br><br>
+<div class="container">
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><h5>댓글</h5></li>
+    </ul>
+    {{#comments}}
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h7>{{user}}</h7></li>
+            <li class="list-group-item">{{commentContent}}</li>
+        </ul>
+    <br>
+        <!--<div class="buttons">
+            <a href="/articles/{{id}}/edit" class="btn btn-primary">Edit</a>
+            <a href="/articles/{{id}}/delete" class="btn btn-danger">Delete</a>
+        </div>-->
+    {{/comments}}
+</div>
+
+<form class="container" action="/articles/comment" method="post">
+    <input type="hidden" name="articleId" value="{{article.id}}"/>
+    <div class="mb-3">
+        <label class="form-label">별명</label>
+        <!--- name 속성안에 Dto의 필드명을 써주면 된다 -->
+        <input type="text" class="form-control" name="user">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">내용</label>
+        <!--- name 속성안에 Dto의 필드명을 써주면 된다 -->
+        <textarea class="form-control" rows="3" name="commentContent"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <!--- 리다이렉트 전체 조회페이지로 이동 기능 a태그로 --->
+</form>
 {{>layouts/footer}}

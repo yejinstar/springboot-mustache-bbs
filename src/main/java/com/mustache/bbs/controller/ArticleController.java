@@ -1,8 +1,11 @@
 package com.mustache.bbs.controller;
 
 import com.mustache.bbs.domain.dto.ArticleDto;
+import com.mustache.bbs.domain.dto.CommentDto;
 import com.mustache.bbs.domain.entity.Article;
+import com.mustache.bbs.domain.entity.Comment;
 import com.mustache.bbs.repository.ArticleRepository;
+import com.mustache.bbs.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +20,11 @@ import java.util.Optional;
 public class ArticleController {
 
     private final ArticleRepository articleRepository;
-    public ArticleController(ArticleRepository articleRepository) {
+    private final CommentRepository commentRepository;
+
+    public ArticleController(ArticleRepository articleRepository, CommentRepository commentRepository) {
         this.articleRepository = articleRepository;
+        this.commentRepository = commentRepository;
     }
 
     @GetMapping(value = "/new")
@@ -53,6 +59,8 @@ public class ArticleController {
 
         if (!optArticle.isEmpty()) {
             model.addAttribute("article", optArticle.get());
+            List<Comment> comments = commentRepository.findByArticleId(id);
+            model.addAttribute("comments", comments);
             return "articles/show";
         } else{
             model.addAttribute("message", String.format("%d 이 없어요.", id));
@@ -89,5 +97,11 @@ public class ArticleController {
     public String delete(@PathVariable Long id) {
         articleRepository.deleteById(id);
         return String.format("redirect:/articles");
+    }
+
+    @PostMapping("/comment")
+    public String postComment(CommentDto commentDto) {
+        Comment saveComment = commentRepository.save(commentDto.toEntity());
+        return String.format("redirect:/articles/%d", saveComment.getArticleId());
     }
 }

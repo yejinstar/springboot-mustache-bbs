@@ -1,4 +1,3 @@
-/*
 package com.mustache.bbs.repository;
 
 import com.mustache.bbs.domain.entity.Comment;
@@ -9,4 +8,3 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByArticleId(Long articleId);
 }
-*/

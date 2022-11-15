@@ -1,4 +1,3 @@
-/*
 package com.mustache.bbs.domain.dto;
 
 import com.mustache.bbs.domain.entity.Comment;
@@ -19,4 +18,3 @@ public class CommentDto {
         return new Comment(this.id, this.articleId,this.commentContent, this.user);
     }
 }
-*/
