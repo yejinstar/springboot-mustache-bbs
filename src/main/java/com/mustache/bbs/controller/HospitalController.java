@@ -1,5 +1,7 @@
 package com.mustache.bbs.controller;
 
+import com.mustache.bbs.domain.entity.Article;
+import com.mustache.bbs.domain.entity.Comment;
 import com.mustache.bbs.domain.entity.Hospital;
 import com.mustache.bbs.repository.HospitalRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +12,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -36,5 +40,19 @@ public class HospitalController {
         model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
         model.addAttribute("next", pageable.next().getPageNumber());
         return "hospitals/list";
+    }
+
+    @GetMapping("/{id}")
+    public String show(@PathVariable Integer id, Model model) {
+        Optional<Hospital> optHospital = hospitalRepository.findById(id);
+
+        if (!optHospital.isEmpty()) {
+            model.addAttribute("hospital", optHospital.get());
+            return "hospitals/show";
+        } else{
+            model.addAttribute("message", String.format("%d 이 없어요.", id));
+            return "hospitals/error";
+        }
+
     }
 }
