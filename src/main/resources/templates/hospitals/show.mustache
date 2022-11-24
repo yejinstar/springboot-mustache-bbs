@@ -6,7 +6,12 @@
         <br>
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><h5>{{hospitalName}}</h5></li>
-            <li class="list-group-item">{{roadNameAddress}}</li>
+            <li class="list-group-item">{{roadNameAddress}}
+                <!--<br>병상 수 : {{patientRoomCount}}
+                <br>{{patientRoomCount}}
+                <br>{{patientRoomCount}}
+                <br>{{patientRoomCount}}
+                <br>{{patientRoomCount}}--></li>
         </ul>
         <br>
     {{/hospital}}
@@ -20,9 +25,9 @@
     </ul>
     {{#reviews}}
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><h7>{{user}}</h7></li>
+            <li class="list-group-item"><h7>{{userName}}</h7></li>
+            <li class="list-group-item">{{title}}</li>
             <li class="list-group-item">{{content}}</li>
-            <li class="list-group-item">{{userName}}</li>
         </ul>
     <br>
         <!--<div class="buttons">
@@ -33,16 +38,16 @@
 </div>
 
 <form class="container" action="/hospitals/review" method="post">
-    <input type="hidden" name="articleId" value="{{hospital.id}}"/>
+    <input type="hidden" name="hospitalId" value="{{hospital.id}}"/>
     <div class="mb-3">
         <label class="form-label">별명</label>
         <!--- name 속성안에 Dto의 필드명을 써주면 된다 -->
-        <input type="text" class="form-control" name="user">
+        <input type="text" class="form-control" name="userName">
     </div>
     <div class="mb-3">
         <label class="form-label">내용</label>
         <!--- name 속성안에 Dto의 필드명을 써주면 된다 -->
-        <textarea class="form-control" rows="3" name="commentContent"></textarea>
+        <textarea class="form-control" rows="3" name="content"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     <!--- 리다이렉트 전체 조회페이지로 이동 기능 a태그로 --->
