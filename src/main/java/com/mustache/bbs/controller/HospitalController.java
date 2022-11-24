@@ -1,9 +1,12 @@
 package com.mustache.bbs.controller;
 
+import com.mustache.bbs.domain.dto.CommentDto;
+import com.mustache.bbs.domain.dto.ReviewCreateRequest;
 import com.mustache.bbs.domain.entity.Article;
 import com.mustache.bbs.domain.entity.Comment;
 import com.mustache.bbs.domain.entity.Hospital;
 import com.mustache.bbs.repository.HospitalRepository;
+import com.mustache.bbs.repository.ReviewRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,10 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +24,11 @@ import java.util.Optional;
 @RequestMapping("/hospitals")
 public class HospitalController {
     private final HospitalRepository hospitalRepository;
+    private final ReviewRepository reviewRepository;
 
-    public HospitalController(HospitalRepository hospitalRepository) {
+    public HospitalController(HospitalRepository hospitalRepository, ReviewRepository repository) {
         this.hospitalRepository = hospitalRepository;
+        this.reviewRepository = repository;
     }
 
     @GetMapping(value = "")
@@ -54,5 +56,11 @@ public class HospitalController {
             return "hospitals/error";
         }
 
+    }
+
+    @PostMapping("/review")
+    public String postComment(ReviewCreateRequest reviewCreateRequest) {
+        log.info("리뷰 등록: {}", reviewCreateRequest);
+        return String.format("redirect:/hostpitals/%d",reviewCreateRequest.getHospitalId());
     }
 }

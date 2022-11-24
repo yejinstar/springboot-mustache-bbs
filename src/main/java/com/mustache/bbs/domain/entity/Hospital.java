@@ -1,12 +1,17 @@
 package com.mustache.bbs.domain.entity;
 
-import com.mustache.bbs.domain.HospitalResponse;
+import com.mustache.bbs.domain.dto.HospitalResponse;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "nation_wide_hospitals")
 public class Hospital {
     @Id
@@ -22,6 +27,9 @@ public class Hospital {
     private Integer totalNumberOfBeds;
     private Float totalAreaSize;
     private Integer businessStatusCode;
+
+    @OneToMany(mappedBy = "hospital", fetch = FetchType.LAZY)
+    private List<Review> reviews;
 
     // HospitalEntity를 HospitalResponse Dto로 만들어주는 부분
     public static HospitalResponse of(Hospital hospital) {

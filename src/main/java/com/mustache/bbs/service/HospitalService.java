@@ -1,6 +1,6 @@
 package com.mustache.bbs.service;
 
-import com.mustache.bbs.domain.HospitalResponse;
+import com.mustache.bbs.domain.dto.HospitalResponse;
 import com.mustache.bbs.domain.entity.Hospital;
 import com.mustache.bbs.repository.HospitalRepository;
 import org.springframework.stereotype.Service;
