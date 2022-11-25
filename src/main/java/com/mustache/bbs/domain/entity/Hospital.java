@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "nation_wide_hospitals")
 public class Hospital {
     @Id
-    private Integer id;
+    private Long id;
 
     @Column(name = "road_name_address")
     private String roadNameAddress;

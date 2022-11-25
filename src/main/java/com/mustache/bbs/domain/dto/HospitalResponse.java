@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HospitalResponse { //Dto
-    private Integer id;
+    private Long id;
     private String roadNameAddress;
     private String hospitalName;
     private Integer patientRoomCount;
@@ -20,7 +20,7 @@ public class HospitalResponse { //Dto
 
     private String businessStatusName;
 
-    public HospitalResponse(Integer id, String roadNameAddress, String hospitalName, Integer patientRoomCount, Integer totalNumberOfBeds, String businessTypeName, Float totalAreaSize) {
+    public HospitalResponse(Long id, String roadNameAddress, String hospitalName, Integer patientRoomCount, Integer totalNumberOfBeds, String businessTypeName, Float totalAreaSize) {
         this.id = id;
         this.roadNameAddress = roadNameAddress;
         this.hospitalName = hospitalName;
