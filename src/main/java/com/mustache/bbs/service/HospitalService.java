@@ -29,4 +29,10 @@ public class HospitalService {
         }
         return hospitalResponse;
     }
+
+    public Hospital findById(Long id) {
+        Hospital hospital = hospitalRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("id가 없습니다."));
+        return hospital;
+    }
 }

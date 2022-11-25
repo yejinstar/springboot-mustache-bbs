@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class ReviewResponse {
+    //Review Create response
 
     private Long id;
     private String title;

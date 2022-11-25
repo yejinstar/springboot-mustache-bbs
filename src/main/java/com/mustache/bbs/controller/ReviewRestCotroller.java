@@ -39,14 +39,7 @@ public class ReviewRestCotroller {
     @GetMapping("/reviews/{id}")
     public ResponseEntity<ReviewReadResponse> getReview(@PathVariable Long id) {
         Review review = reviewService.getReview(id);
-        Hospital hospital = review.getHospital();
-        ReviewReadResponse response = ReviewReadResponse.builder()
-                .id(review.getId())
-                .title(review.getTitle())
-                .content(review.getContent())
-                .userName(review.getUserName())
-                .hospitalName(hospital.getHospitalName())
-                .build();
+        ReviewReadResponse response = ReviewReadResponse.fromEntity(review);
 
         return ResponseEntity.ok().body(response);
     }

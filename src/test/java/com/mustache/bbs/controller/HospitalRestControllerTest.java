@@ -32,7 +32,7 @@ class HospitalRestControllerTest {
     @DisplayName("Json 형식으로 Response가 잘 오는지")
     void jsonResponse() throws Exception {
         HospitalResponse hospitalResponse = HospitalResponse.builder()
-                .id(2321)
+                .id(2321L)
                 .roadNameAddress("서울특별시 서초구 서초중앙로 230, 202호 (반포동, 동화반포프라자빌딩)")
                 .hospitalName("노소아청소년과의원")
                 .patientRoomCount(0)
@@ -41,9 +41,9 @@ class HospitalRestControllerTest {
                 .totalAreaSize(0.0f)
                 .businessStatusName("영업중")
                 .build();
-        given(hospitalService.getHospital(2321)).willReturn(hospitalResponse);
+        given(hospitalService.getHospital(2321L)).willReturn(hospitalResponse);
 
-        int hospitalId = 2321;
+        Long hospitalId = 2321L;
         String url = String.format("/api/v1/hospitals/%d", hospitalId);
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
