@@ -61,18 +61,9 @@ public class ReviewService {
         Optional<Review> optionalReview = reviewRepository.
     }*/
 
-    /*public Review get(Long id) {
-        Optional<Review> reviews = reviewRepository.findByHospitalId(optHospital.get());
-        return reviews.get();
+    public Review getReview(Long id) {
+        Review review = reviewRepository.findById(id).orElseThrow(
+                ()->new RuntimeException("해당 id가 없습니다."));
+        return review;
     }
-
-    public Page<Review> getReviews(Integer hospitalId, Pageable pageable) {
-        Page<Review> reviews = reviewRepository.findByHospitalId(hospitalId, pageable);
-        return reviews;
-    }
-
-    public ReviewResponse findReviewsById(Integer id) {
-        Optional<Review> optionalReview=reviewRepository.findById(id);
-        return ReviewResponse.of(optionalReview.get());
-    }*/
 }

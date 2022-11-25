@@ -2,23 +2,30 @@ package com.mustache.bbs.controller;
 
 import com.mustache.bbs.domain.dto.HospitalResponse;
 import com.mustache.bbs.domain.dto.ReviewCreateRequest;
+import com.mustache.bbs.domain.dto.ReviewReadResponse;
 import com.mustache.bbs.domain.dto.ReviewResponse;
+import com.mustache.bbs.domain.entity.Hospital;
 import com.mustache.bbs.domain.entity.Review;
+import com.mustache.bbs.service.HospitalService;
 import com.mustache.bbs.service.ReviewService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/hospitals")
 public class ReviewRestCotroller {
     private final ReviewService reviewService;
-
-    public ReviewRestCotroller(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
+    private final HospitalService hospitalService;
 
     @PostMapping("/{id}")
     public ResponseEntity<ReviewResponse> addReview(@PathVariable Integer id,
@@ -29,10 +36,17 @@ public class ReviewRestCotroller {
 
 
     //리뷰 읽어오기
-    /*@GetMapping("/{id}/reviews")
-    public ResponseEntity<ReviewResponse> getReview(@PathVariable Integer id) {
-        ReviewResponse reviewResponse = reviewService.get(id);
-        return ResponseEntity.ok().body(reviewResponse);
-    }*/
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<ReviewReadResponse> getReview(@PathVariable Long id) {
+        Review review = reviewService.getReview(id);
+        ReviewReadResponse response = ReviewReadResponse.builder()
+                .id(review.getId())
+                .title(review.getTitle())
+                .content(review.getContent())
+                .userName(review.getUserName())
+                .hospitalName("병원이름 빈칸")
+                .build();
+        return ResponseEntity.ok().body(response);
+    }
 
 }
