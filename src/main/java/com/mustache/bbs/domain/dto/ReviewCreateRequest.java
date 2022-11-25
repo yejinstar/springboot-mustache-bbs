@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 public class ReviewCreateRequest {
-    private Integer hospitalId;
+    private Long hospitalId;
     private String userName;
     private String title;
     private String content;

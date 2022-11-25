@@ -36,16 +36,18 @@ public class ReviewRestCotroller {
 
 
     //리뷰 읽어오기
-    @GetMapping("/{id}/reviews")
+    @GetMapping("/reviews/{id}")
     public ResponseEntity<ReviewReadResponse> getReview(@PathVariable Long id) {
         Review review = reviewService.getReview(id);
+        Hospital hospital = review.getHospital();
         ReviewReadResponse response = ReviewReadResponse.builder()
                 .id(review.getId())
                 .title(review.getTitle())
                 .content(review.getContent())
                 .userName(review.getUserName())
-                .hospitalName("병원이름 빈칸")
+                .hospitalName(hospital.getHospitalName())
                 .build();
+
         return ResponseEntity.ok().body(response);
     }
 

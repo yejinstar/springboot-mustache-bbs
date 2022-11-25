@@ -2,6 +2,7 @@ package com.mustache.bbs.service;
 
 import com.mustache.bbs.domain.dto.ArticleDto;
 import com.mustache.bbs.domain.dto.ReviewCreateRequest;
+import com.mustache.bbs.domain.dto.ReviewReadResponse;
 import com.mustache.bbs.domain.dto.ReviewResponse;
 import com.mustache.bbs.domain.entity.Article;
 import com.mustache.bbs.domain.entity.Hospital;
@@ -12,7 +13,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -65,5 +69,19 @@ public class ReviewService {
         Review review = reviewRepository.findById(id).orElseThrow(
                 ()->new RuntimeException("해당 id가 없습니다."));
         return review;
+    }
+
+    public List<ReviewReadResponse> findAllByHospitalId(Long hospitalId) {
+        Hospital hospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 id가 없습니다."));
+        List<ReviewReadResponse> reviews = reviewRepository.findByHospital(hospital)
+                .stream().map(review -> ReviewReadResponse.builder()
+                        .title(review.getTitle())
+                        .content(review.getContent())
+                        .userName(review.getUserName())
+                        .hospitalName(review.getHospital().getHospitalName())
+                        .build()
+                ).collect(Collectors.toList());
+        return reviews;
     }
 }
