@@ -18,7 +18,7 @@ class HospitalRepositoryTest {
 
     @Test
     void name(){
-        Optional<Hospital> hospital = hospitalRepository.findById(1);
+        Optional<Hospital> hospital = hospitalRepository.findById(1L);
         Hospital hp = hospital.get();
         System.out.println("Test"+hp.getId());
     }
