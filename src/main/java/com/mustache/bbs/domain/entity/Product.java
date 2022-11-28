@@ -1,4 +1,4 @@
-package com.mustache.bbs.domain;
+package com.mustache.bbs.domain.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
