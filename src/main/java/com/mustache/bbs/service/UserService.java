@@ -7,6 +7,7 @@ import com.mustache.bbs.exception.ErrorCode;
 import com.mustache.bbs.exception.HospitalReviewAppException;
 import com.mustache.bbs.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ public class UserService {
 * 중복이면 회원가입 안되도록 Exception
 * */
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
     public UserDto join(UserJoinRequest request) {
 
@@ -30,7 +32,7 @@ public class UserService {
                 .ifPresent(user -> {
                     throw new HospitalReviewAppException(ErrorCode.DUPLICATED_USER_NAME, String.format("UserName:%s", request.getUserName()));
                 });
-        User savedUser = userRepository.save(request.toEntity());
+        User savedUser = userRepository.save(request.toEntity(encoder.encode(request.getPassword())));
 
         return UserDto.builder()
                 .id(savedUser.getId())
