@@ -36,6 +36,12 @@ class UserControllerTest {
     @MockBean
     UserService userService;
 
+    UserJoinRequest userJoinRequest = UserJoinRequest.builder()
+            .userName("Yejins")
+            .password("1234")
+            .emailAddress("yejins@gmail.com")
+            .build();
+
     @Test
     @DisplayName("Join success")
     @WithMockUser
@@ -76,5 +82,32 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
+    @Test
+    @DisplayName("Login fail - no id")
+    @WithMockUser
+    void login_fail1() throws Exception{
+        when(userService.login(any(),any())).thenThrow(new HospitalReviewAppException(ErrorCode.NOT_FOUND, ""));
+            /*
+            * id pw 보내서
+            * NOT_FOUND
+            * */
+        mockMvc.perform(post("/api/v1/users/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                .andDo(print())
+                .andExpect(status().isConflict());
+    }
+    @Test
+    @DisplayName("Login fail - error pwd")
+    @WithMockUser
+    void login_fail2() throws Exception{
 
+    }
+    @Test
+    @DisplayName("Login success")
+    @WithMockUser
+    void login_success() throws Exception{
+
+    }
 }
