@@ -1,9 +1,8 @@
 package com.mustache.bbs.controller;
 
 import com.mustache.bbs.domain.Response;
-import com.mustache.bbs.domain.dto.UserDto;
-import com.mustache.bbs.domain.dto.UserJoinRequest;
-import com.mustache.bbs.domain.dto.UserJoinResponse;
+import com.mustache.bbs.domain.dto.UserLoginResponse;
+import com.mustache.bbs.domain.dto.*;
 import com.mustache.bbs.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,5 +20,12 @@ public class UserController {
         UserDto userDto = userService.join(userJoinRequest);
         return Response.success(new UserJoinResponse(userDto.getUserName(),userDto.getEmailAddress()));
 
+    }
+
+    @PostMapping("/login")
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest) {
+        String token = userService.login(userLoginRequest.getUserName(),
+                userLoginRequest.getPassword());
+        return Response.success(new UserLoginResponse(token));
     }
 }

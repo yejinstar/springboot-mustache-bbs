@@ -6,7 +6,10 @@ import com.mustache.bbs.domain.entity.User;
 import com.mustache.bbs.exception.ErrorCode;
 import com.mustache.bbs.exception.HospitalReviewAppException;
 import com.mustache.bbs.repository.UserRepository;
+import com.mustache.bbs.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,11 @@ public class UserService {
 * */
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
+
+    @Value("${jwt.token.secret}") // Spring Annotation
+    private String secretKey;
+
+    private long expireTimeMs = 10000 * 60 * 60 ; // 1시간
 
     public UserDto join(UserJoinRequest request) {
 
@@ -39,5 +47,19 @@ public class UserService {
                 .userName(savedUser.getUserName())
                 .emailAddress(savedUser.getEmailAddress())
                 .build();
+    }
+
+    public String login(String userName, String password) {
+
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new HospitalReviewAppException(
+                        ErrorCode.NOT_FOUND, String.format("%s는 가입된 적이 없습니다.", userName)
+                ));
+
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new HospitalReviewAppException(ErrorCode.INVALID_PASSWORD, "userName 또는 password가 잘못 되었습니다.");
+        }
+
+        return JwtTokenUtil.createToken(userName,secretKey,expireTimeMs);
     }
 }
