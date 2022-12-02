@@ -18,6 +18,6 @@ public class ExceptionManager {
     @ExceptionHandler(HospitalReviewAppException.class)
     public ResponseEntity<?> hospitalReviewAppExceptionHandler(HospitalReviewAppException e) {
         return ResponseEntity.status(e.getErrorCode().getStatus())
-                .body(Response.error(e.getErrorCode().getMessage()));
+                .body(e.getErrorCode() + " " + e.getMessage());
     }
 }
