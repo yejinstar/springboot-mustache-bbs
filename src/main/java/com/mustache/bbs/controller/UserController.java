@@ -5,10 +5,7 @@ import com.mustache.bbs.domain.dto.UserLoginResponse;
 import com.mustache.bbs.domain.dto.*;
 import com.mustache.bbs.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -27,5 +24,11 @@ public class UserController {
         String token = userService.login(userLoginRequest.getUserName(),
                 userLoginRequest.getPassword());
         return Response.success(new UserLoginResponse(token));
+    }
+
+    @GetMapping("/login/{name}")
+    public Response<UserLoginResponse> login_get(@PathVariable String name) {
+        UserLoginResponse response = userService.find(name);
+        return Response.success(response);
     }
 }
