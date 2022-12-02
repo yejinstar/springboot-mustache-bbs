@@ -2,6 +2,7 @@ package com.mustache.bbs.service;
 
 import com.mustache.bbs.domain.dto.UserDto;
 import com.mustache.bbs.domain.dto.UserJoinRequest;
+import com.mustache.bbs.domain.dto.UserLoginResponse;
 import com.mustache.bbs.domain.entity.User;
 import com.mustache.bbs.exception.ErrorCode;
 import com.mustache.bbs.exception.HospitalReviewAppException;
@@ -61,5 +62,18 @@ public class UserService {
         }
 
         return JwtTokenUtil.createToken(userName,secretKey,expireTimeMs);
+    }
+
+    public UserLoginResponse find(String userName) {
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new HospitalReviewAppException(
+                        ErrorCode.NOT_FOUND, String.format("%s는 가입된 적이 없습니다.", userName)
+                ));
+
+        UserLoginResponse response;
+
+        return UserLoginResponse.builder()
+                .token(JwtTokenUtil.createToken(userName,secretKey,expireTimeMs))
+                .build();
     }
 }
