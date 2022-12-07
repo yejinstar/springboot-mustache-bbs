@@ -29,7 +29,11 @@ public class UserService {
     private String secretKey;
 
     private long expireTimeMs = 10000 * 60 * 60 ; // 1시간
-
+    public User getUserByUserName(String userName) {
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new HospitalReviewAppException(ErrorCode.USER_NOT_FOUNDED, ""));
+        return user;
+    }
     public UserDto join(UserJoinRequest request) {
 
         // 없으면 에러처리
